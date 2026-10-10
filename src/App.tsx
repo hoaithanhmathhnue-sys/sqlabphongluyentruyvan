@@ -13,6 +13,12 @@ import { TeacherReportView } from './components/TeacherReportView';
 import { StudentModal } from './components/StudentModal';
 import { DatabaseSelectorModal } from './components/DatabaseSelectorModal';
 import { AuthorModal } from './components/AuthorModal';
+import { LoginScreen } from './components/LoginScreen';
+import {
+  isAuthenticated,
+  logoutTeacher,
+  getAuthenticatedUser
+} from './services/authService';
 import {
   getStudentProfile,
   saveStudentProfile,
@@ -39,6 +45,22 @@ import {
 } from 'lucide-react';
 
 export default function App() {
+  // Authentication State
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => isAuthenticated());
+  const [loggedInUser, setLoggedInUser] = useState<string>(() => getAuthenticatedUser());
+
+  const handleLoginSuccess = (displayName: string) => {
+    setLoggedInUser(displayName);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('Bạn có chắc chắn muốn đăng xuất khỏi hệ thống SQLAB không?')) {
+      logoutTeacher();
+      setIsLoggedIn(false);
+    }
+  };
+
   // Navigation & DB State
   const [activeTab, setActiveTab] = useState<'workspace' | 'er' | 'join' | 'report'>('workspace');
   const [activeDbId, setActiveDbId] = useState<string>(() => getActiveDbId());
@@ -220,6 +242,22 @@ export default function App() {
     return Object.values(studentProfile.taskScores).reduce((a, b) => a + b, 0);
   }, [studentProfile.taskScores]);
 
+  // Nếu chưa đăng nhập, hiển thị Màn hình Đăng nhập bảo mật
+  if (!isLoggedIn) {
+    return (
+      <>
+        <LoginScreen
+          onLoginSuccess={handleLoginSuccess}
+          onOpenAuthorModal={() => setIsAuthorModalOpen(true)}
+        />
+        <AuthorModal
+          isOpen={isAuthorModalOpen}
+          onClose={() => setIsAuthorModalOpen(false)}
+        />
+      </>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
       {/* Navigation Header */}
@@ -234,6 +272,7 @@ export default function App() {
         onResetDb={handleResetDb}
         isResetting={isResettingDb}
         onOpenAuthorModal={() => setIsAuthorModalOpen(true)}
+        onLogout={handleLogout}
       />
 
       {/* Main Content Area based on Tab */}

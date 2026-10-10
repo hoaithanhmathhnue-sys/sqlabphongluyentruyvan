@@ -12,7 +12,8 @@ import {
   GitFork, 
   Terminal, 
   ChevronDown,
-  Sparkles
+  Sparkles,
+  LogOut
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -26,6 +27,7 @@ interface NavbarProps {
   onResetDb: () => void;
   isResetting: boolean;
   onOpenAuthorModal: () => void;
+  onLogout?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -38,7 +40,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenStudentModal,
   onResetDb,
   isResetting,
-  onOpenAuthorModal
+  onOpenAuthorModal,
+  onLogout
 }) => {
   const getDbIcon = (id: string) => {
     switch (id) {
@@ -217,6 +220,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>{totalScore}đ</span>
             </div>
           </button>
+
+          {/* Nút Đăng xuất */}
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-rose-200/90 bg-rose-50/80 hover:bg-rose-100 text-rose-700 text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+              title="Đăng xuất khỏi hệ thống"
+            >
+              <LogOut className="w-3.5 h-3.5 text-rose-600" />
+              <span className="hidden sm:inline">Đăng xuất</span>
+            </button>
+          )}
         </div>
       </div>
     </header>
