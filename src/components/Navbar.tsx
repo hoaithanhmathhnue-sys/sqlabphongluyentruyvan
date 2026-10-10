@@ -12,10 +12,7 @@ import {
   GitFork, 
   Terminal, 
   ChevronDown,
-  Sparkles,
-  Lock,
-  LogOut,
-  ShieldCheck
+  Sparkles
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -29,9 +26,6 @@ interface NavbarProps {
   onResetDb: () => void;
   isResetting: boolean;
   onOpenAuthorModal: () => void;
-  onOpenLoginModal: () => void;
-  isTeacherLoggedIn: boolean;
-  onLogoutTeacher: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -44,10 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenStudentModal,
   onResetDb,
   isResetting,
-  onOpenAuthorModal,
-  onOpenLoginModal,
-  isTeacherLoggedIn,
-  onLogoutTeacher
+  onOpenAuthorModal
 }) => {
   const getDbIcon = (id: string) => {
     switch (id) {
@@ -193,31 +184,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="truncate max-w-[95px] sm:max-w-none">Cô Kim Thoa</span>
           </button>
 
-          {/* Teacher Login / Status Chip */}
-          {isTeacherLoggedIn ? (
-            <div className="hidden sm:flex items-center space-x-1 bg-emerald-50 border border-emerald-200 text-emerald-800 px-2 py-1 rounded-xl text-xs font-bold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="hidden md:inline">GV Quản trị</span>
-              <button
-                type="button"
-                onClick={onLogoutTeacher}
-                className="text-slate-400 hover:text-rose-600 ml-1 p-0.5"
-                title="Đăng xuất quyền Giáo viên"
-              >
-                <LogOut className="w-3 h-3" />
-              </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={onOpenLoginModal}
-              className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50 text-slate-700 hover:text-sky-800 text-xs font-semibold transition cursor-pointer"
-              title="Đăng nhập tài khoản Giáo viên (Trần Thị Kim Thoa / 12345)"
-            >
-              <Lock className="w-3 h-3 text-sky-600" />
-              <span>Đăng nhập GV</span>
-            </button>
-          )}
 
           {/* Reset DB Button */}
           <button

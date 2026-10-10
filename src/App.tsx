@@ -13,7 +13,6 @@ import { TeacherReportView } from './components/TeacherReportView';
 import { StudentModal } from './components/StudentModal';
 import { DatabaseSelectorModal } from './components/DatabaseSelectorModal';
 import { AuthorModal } from './components/AuthorModal';
-import { TeacherLoginModal } from './components/TeacherLoginModal';
 import {
   getStudentProfile,
   saveStudentProfile,
@@ -46,14 +45,6 @@ export default function App() {
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
   const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
-  const [isTeacherLoginModalOpen, setIsTeacherLoginModalOpen] = useState(false);
-  const [isTeacherLoggedIn, setIsTeacherLoggedIn] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem('sqlab_teacher_auth') === 'true';
-    } catch {
-      return false;
-    }
-  });
   const [isResettingDb, setIsResettingDb] = useState(false);
 
   // Student Profile State
@@ -229,24 +220,6 @@ export default function App() {
     return Object.values(studentProfile.taskScores).reduce((a, b) => a + b, 0);
   }, [studentProfile.taskScores]);
 
-  const handleTeacherLoginSuccess = (teacherName: string) => {
-    setIsTeacherLoggedIn(true);
-    try {
-      localStorage.setItem('sqlab_teacher_auth', 'true');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleLogoutTeacher = () => {
-    setIsTeacherLoggedIn(false);
-    try {
-      localStorage.removeItem('sqlab_teacher_auth');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900">
       {/* Navigation Header */}
@@ -261,9 +234,6 @@ export default function App() {
         onResetDb={handleResetDb}
         isResetting={isResettingDb}
         onOpenAuthorModal={() => setIsAuthorModalOpen(true)}
-        onOpenLoginModal={() => setIsTeacherLoginModalOpen(true)}
-        isTeacherLoggedIn={isTeacherLoggedIn}
-        onLogoutTeacher={handleLogoutTeacher}
       />
 
       {/* Main Content Area based on Tab */}
@@ -541,24 +511,11 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsAuthorModalOpen(true)}
-              className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold transition shadow-2xs cursor-pointer flex items-center gap-1.5"
+              className="px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-bold transition shadow-2xs cursor-pointer flex items-center gap-1.5"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
               <span>Thông tin Tác giả</span>
             </button>
-            {!isTeacherLoggedIn ? (
-              <button
-                type="button"
-                onClick={() => setIsTeacherLoginModalOpen(true)}
-                className="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-800 font-bold transition shadow-2xs cursor-pointer"
-              >
-                Đăng nhập GV
-              </button>
-            ) : (
-              <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-xl">
-                ✓ Đã xác thực GV
-              </span>
-            )}
           </div>
         </div>
       </footer>
@@ -581,13 +538,6 @@ export default function App() {
       <AuthorModal
         isOpen={isAuthorModalOpen}
         onClose={() => setIsAuthorModalOpen(false)}
-        onOpenLogin={() => setIsTeacherLoginModalOpen(true)}
-      />
-
-      <TeacherLoginModal
-        isOpen={isTeacherLoginModalOpen}
-        onClose={() => setIsTeacherLoginModalOpen(false)}
-        onLoginSuccess={handleTeacherLoginSuccess}
       />
     </div>
   );

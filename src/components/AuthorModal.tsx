@@ -4,10 +4,9 @@ import { X, Award, School, MapPin, User, BookOpen, Sparkles, CheckCircle2, Shiel
 interface AuthorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpenLogin?: () => void;
 }
 
-export const AuthorModal: React.FC<AuthorModalProps> = ({ isOpen, onClose, onOpenLogin }) => {
+export const AuthorModal: React.FC<AuthorModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -152,22 +151,10 @@ export const AuthorModal: React.FC<AuthorModalProps> = ({ isOpen, onClose, onOpe
           </div>
 
           <div className="flex items-center space-x-2">
-            {onOpenLogin && (
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  onOpenLogin();
-                }}
-                className="px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold transition shadow-xs cursor-pointer"
-              >
-                Đăng nhập Giáo viên
-              </button>
-            )}
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-200 text-slate-700 font-semibold transition cursor-pointer"
+              className="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold transition shadow-xs cursor-pointer"
             >
               Đóng
             </button>
