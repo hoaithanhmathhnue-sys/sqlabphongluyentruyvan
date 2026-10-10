@@ -1,0 +1,101 @@
+[
+  {
+    "id": "tv_nb_01",
+    "dbId": "thu_vien",
+    "title": "Danh sách toàn bộ tác giả",
+    "level": "nhan_biet",
+    "prompt": "Viết truy vấn để hiển thị toàn bộ thông tin của tất cả các tác giả trong bảng TacGia.",
+    "solutionQuery": "SELECT * FROM TacGia;",
+    "orderSensitive": false,
+    "hint": "Sử dụng lệnh SELECT * FROM ... để lấy tất cả các cột và dòng trong bảng.",
+    "points": 5
+  },
+  {
+    "id": "tv_nb_02",
+    "dbId": "thu_vien",
+    "title": "Tra cứu mã sách và tên sách",
+    "level": "nhan_biet",
+    "prompt": "Hiển thị danh sách gồm hai cột: MaSach và TenSach từ bảng Sach.",
+    "solutionQuery": "SELECT MaSach, TenSach FROM Sach;",
+    "orderSensitive": false,
+    "hint": "Liệt kê các cột cần lấy sau từ khóa SELECT, ngăn cách bằng dấu phẩy.",
+    "points": 5
+  },
+  {
+    "id": "tv_nb_03",
+    "dbId": "thu_vien",
+    "title": "Thông tin học sinh mượn sách",
+    "level": "nhan_biet",
+    "prompt": "Lấy thông tin gồm MaDG, TenDG và Lop của toàn bộ độc giả trong bảng DocGia.",
+    "solutionQuery": "SELECT MaDG, TenDG, Lop FROM DocGia;",
+    "orderSensitive": false,
+    "hint": "Liệt kê các trường MaDG, TenDG, Lop sau từ khóa SELECT và chỉ định bảng DocGia.",
+    "points": 5
+  },
+  {
+    "id": "tv_th_01",
+    "dbId": "thu_vien",
+    "title": "Lọc sách xuất bản từ năm 2020 trở lại đây",
+    "level": "thong_hieu",
+    "prompt": "Liệt kê TenSach và NamXB của các cuốn sách xuất bản từ năm 2020 trở đi (NamXB >= 2020), sắp xếp giảm dần theo năm xuất bản.",
+    "solutionQuery": "SELECT TenSach, NamXB FROM Sach WHERE NamXB >= 2020 ORDER BY NamXB DESC;",
+    "orderSensitive": true,
+    "hint": "Sử dụng mệnh đề WHERE NamXB >= 2020 để lọc và ORDER BY NamXB DESC để sắp xếp giảm dần.",
+    "points": 10
+  },
+  {
+    "id": "tv_th_02",
+    "dbId": "thu_vien",
+    "title": "Đếm tổng số lượt mượn sách",
+    "level": "thong_hieu",
+    "prompt": "Đếm xem có bao nhiêu lượt mượn sách đã được ghi nhận trong bảng Muon. Đặt tên cột kết quả là SoLuotMuon.",
+    "solutionQuery": "SELECT COUNT(*) AS SoLuotMuon FROM Muon;",
+    "orderSensitive": false,
+    "hint": "Sử dụng hàm gộp COUNT(*) kết hợp bí danh cột AS SoLuotMuon.",
+    "points": 10
+  },
+  {
+    "id": "tv_th_03",
+    "dbId": "thu_vien",
+    "title": "Tính tổng số lượng sách trong kho",
+    "level": "thong_hieu",
+    "prompt": "Tính tổng số lượng tất cả các cuốn sách hiện có trong bảng Sach. Đặt tên cột kết quả là TongSoLuong.",
+    "solutionQuery": "SELECT SUM(SoLuong) AS TongSoLuong FROM Sach;",
+    "orderSensitive": false,
+    "hint": "Sử dụng hàm SUM(SoLuong) với bí danh AS TongSoLuong.",
+    "points": 10
+  },
+  {
+    "id": "tv_vd_01",
+    "dbId": "thu_vien",
+    "title": "Liên kết Tác giả và Tác phẩm (JOIN)",
+    "level": "van_dung",
+    "prompt": "Hiển thị TenSach và TenTG tương ứng của mỗi cuốn sách bằng cách liên kết bảng Sach và bảng TacGia theo MaTG.",
+    "solutionQuery": "SELECT Sach.TenSach, TacGia.TenTG FROM Sach INNER JOIN TacGia ON Sach.MaTG = TacGia.MaTG;",
+    "orderSensitive": false,
+    "hint": "Sử dụng INNER JOIN giữa Sach và TacGia với điều kiện ON Sach.MaTG = TacGia.MaTG.",
+    "points": 15
+  },
+  {
+    "id": "tv_vd_02",
+    "dbId": "thu_vien",
+    "title": "Thống kê số lượng đầu sách theo tác giả",
+    "level": "van_dung",
+    "prompt": "Đếm số đầu sách của từng tác giả. Kết quả gồm TenTG và SoDauSach (dùng COUNT(*)), chỉ lấy những tác giả có từ 2 đầu sách trở lên.",
+    "solutionQuery": "SELECT TacGia.TenTG, COUNT(*) AS SoDauSach FROM Sach INNER JOIN TacGia ON Sach.MaTG = TacGia.MaTG GROUP BY TacGia.TenTG HAVING COUNT(*) >= 2;",
+    "orderSensitive": false,
+    "hint": "Kết hợp JOIN, GROUP BY TacGia.TenTG và điều kiện lọc sau nhóm HAVING COUNT(*) >= 2.",
+    "points": 15
+  },
+  {
+    "id": "tv_vd_03",
+    "dbId": "thu_vien",
+    "title": "Danh sách học sinh đang mượn sách chưa trả",
+    "level": "van_dung",
+    "prompt": "Hiển thị TenDG, Lop và TenSach của những lượt mượn chưa trả sách (NgayTra IS NULL).",
+    "solutionQuery": "SELECT DocGia.TenDG, DocGia.Lop, Sach.TenSach FROM Muon INNER JOIN DocGia ON Muon.MaDG = DocGia.MaDG INNER JOIN Sach ON Muon.MaSach = Sach.MaSach WHERE Muon.NgayTra IS NULL;",
+    "orderSensitive": false,
+    "hint": "Nối 3 bảng Muon, DocGia, Sach và sử dụng điều kiện WHERE Muon.NgayTra IS NULL.",
+    "points": 15
+  }
+]
